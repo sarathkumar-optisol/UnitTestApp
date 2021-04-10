@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">UnitTestApp</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="username">UserEmail</string>
+    <string name="password">Password (atleast 6 characters)</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="signin">SignIn</string>
+    <string name="signuptv">SignUp</string>
+    <string name="signin_with_facebook">SignIn with Facebook</string>
+    <string name="signin_with_twitter">SignIn with Twitter</string>
+    <string name="don_t_have_an_account">Dont have an account ?</string>
+    <string name="already_have_an_account">Already Have an Account ?</string>
+    <string name="signUp">SignUp</string>
+    <string name="invalid_credential">Invalid Credential</string>
 </resources>

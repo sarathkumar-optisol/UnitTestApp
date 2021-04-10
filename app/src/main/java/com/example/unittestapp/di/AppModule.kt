@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.unittestapp.data.UserDao
 import com.example.unittestapp.data.UserDatabase
+import com.example.unittestapp.main.DefaultMainRepository
+import com.example.unittestapp.main.MainRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +30,10 @@ object AppModule {
             "user_data.db"
         ).build()
     }
+
+    @Singleton
+    @Provides
+    fun provideMainRepository(db : UserDao) : MainRepository = DefaultMainRepository(db)
 
     @Provides
     @Singleton
