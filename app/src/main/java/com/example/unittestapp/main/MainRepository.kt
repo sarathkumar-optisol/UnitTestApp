@@ -14,4 +14,6 @@ interface MainRepository {
 
     suspend fun insertUserProfile(userProfile: UserProfile)
 
+    suspend fun insertUserData(userName: String,password : String) : Resource<UserProfile>
+
 }

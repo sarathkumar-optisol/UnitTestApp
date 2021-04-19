@@ -1,5 +1,6 @@
 package com.example.unittestapp.data
 
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -77,7 +78,6 @@ class UserDaoTest {
         val allUsers = dao.getUserProfileList()
 
         assertThat(allUsers).containsExactly(userProfile1,userProfile2,userProfile3)
-
 
     }
 

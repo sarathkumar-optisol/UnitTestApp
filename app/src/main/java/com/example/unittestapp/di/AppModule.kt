@@ -6,11 +6,14 @@ import com.example.unittestapp.data.UserDao
 import com.example.unittestapp.data.UserDatabase
 import com.example.unittestapp.main.DefaultMainRepository
 import com.example.unittestapp.main.MainRepository
+import com.example.unittestapp.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 /**
@@ -39,6 +42,20 @@ object AppModule {
     @Singleton
     fun provideUserDao(userDatabase: UserDatabase): UserDao {
         return userDatabase.getUserDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideDispatchers() : DispatcherProvider = object : DispatcherProvider{
+        override val main: CoroutineDispatcher
+            get() = Dispatchers.Main
+        override val io: CoroutineDispatcher
+            get() = Dispatchers.IO
+        override val default: CoroutineDispatcher
+            get() = Dispatchers.Default
+        override val unconfined: CoroutineDispatcher
+            get() = Dispatchers.Unconfined
+
     }
 
 }
