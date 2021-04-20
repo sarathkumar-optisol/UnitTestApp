@@ -23,8 +23,7 @@ const val errorMessage = "UnExpected Error"
 @ExperimentalCoroutinesApi
 class MainViewModel @ViewModelInject constructor(
     private val repository: MainRepository,
-    private val db : UserDatabase,
-    private val dispatchers : DispatcherProvider
+    private val dispatchers : DispatcherProvider?
 ) : ViewModel() {
 
     sealed class RegisterEvent {
@@ -71,35 +70,35 @@ class MainViewModel @ViewModelInject constructor(
     private val _userProfileList = MutableStateFlow<ProfileListEvent>(ProfileListEvent.Empty)
     val userProfileList: StateFlow<ProfileListEvent> = _userProfileList
 
-   fun registerUser(
-       userName : String,
-       password : String
-   ){
-       viewModelScope.launch(dispatchers.io) {
-           _registerData.value = RegisterEvent.Loading
-           when (val registrationResponse = repository.insertUserData(userName, password)) {
-               is Resource.Error -> {
-                   _registerData.value = RegisterEvent.Failure("Incorrect")
-                   Log.d("MVIEWMODEL", "Incorrect")
-               }
-               is Resource.Success -> {
-                   val data = registrationResponse.data
-                   Log.d("$data", "registrationResponse")
-                   if (data == null) {
-                       _registerData.value = RegisterEvent.Failure(errorMessage)
-                   } else {
-                       _registerData.value = RegisterEvent.Success(data.toString())
-                       Log.d("MVIEWMODEL", "success")
-                   }
-               }
-           }
-
-       }
-   }
+//   fun registerUser(
+//       userName : String,
+//       password : String
+//   ){
+//       viewModelScope.launch(dispatchers.io) {
+//           _registerData.value = RegisterEvent.Loading
+//           when (val registrationResponse = repository.insertUserData(userName, password)) {
+//               is Resource.Error -> {
+//                   _registerData.value = RegisterEvent.Failure("Incorrect")
+//                   Log.d("MVIEWMODEL", "Incorrect")
+//               }
+//               is Resource.Success -> {
+//                   val data = registrationResponse.data
+//                   Log.d("$data", "registrationResponse")
+//                   if (data == null) {
+//                       _registerData.value = RegisterEvent.Failure(errorMessage)
+//                   } else {
+//                       _registerData.value = RegisterEvent.Success(data.toString())
+//                       Log.d("MVIEWMODEL", "success")
+//                   }
+//               }
+//           }
+//
+//       }
+//   }
 
 
     fun verifyUserLogin(userName: String){
-        viewModelScope.launch(dispatchers.io) {
+        viewModelScope.launch(dispatchers!!.io) {
             _loginData.value = LoginEvent.Loading
             when (val loginResponse = repository.getUserLoginDetail(userName)) {
                 is Resource.Error -> {
@@ -124,7 +123,7 @@ class MainViewModel @ViewModelInject constructor(
 
 
     fun getUserProfileList(){
-        viewModelScope.launch(dispatchers.io) {
+        viewModelScope.launch(dispatchers!!.io) {
             _userProfileList.value = ProfileListEvent.Loading
             when (val userprofileListResponse = repository.getUserProfileList()) {
                 is Resource.Error -> {

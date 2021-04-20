@@ -98,3 +98,15 @@ l
 Kapp/src/main/java/com/example/unittestapp/adapter/UserProfileListAdapter.kt,5\8\584a8d5cf6ef07d9b42c291d6818e3478070cb95
 t
 Dapp/src/main/java/com/example/unittestapp/ui/RegistrationActivity.kt,5\f\5ffff1c9f019ed74e16603c721a69f95c46604b4
+Y
+)app/src/main/res/layout/activity_home.xml,8\4\84bbfd95b490b92591d2b037417f036942315d57
+Y
+)app/src/main/res/layout/activity_main.xml,7\6\76b07e40f24cce093536731477540f12e7da3cb6
+a
+1app/src/main/res/layout/activity_registration.xml,3\3\33d54503f0d7617c3e23e16a0f8b5c214b89354e
+S
+#app/src/main/res/menu/main_menu.xml,d\e\ded5c887bbeaf031e4b264875c385f52e227c161
+R
+"app/src/main/res/values/themes.xml,e\b\eb7f0f821bde169dd21862705b2b042d2cea69a3
+X
+(app/src/main/res/values-night/themes.xml,8\c\8c3a6b96d9ffba496992e612d58227c19e6b9e65

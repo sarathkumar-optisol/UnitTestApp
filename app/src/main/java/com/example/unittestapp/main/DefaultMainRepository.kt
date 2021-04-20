@@ -26,9 +26,9 @@ class DefaultMainRepository @Inject constructor(
         userDao.insertUserProfile(userProfile)
     }
 
-    override suspend fun insertUserData(userName: String, password: String) : Resource<UserProfile> {
-        val user = userDao.insertUserData(userName,password)
-        return Resource.Success(user)
-
-    }
+//    override suspend fun insertUserData(userName: String, password: String) : Resource<UserProfile> {
+//        val user = userDao.insertUserData(userName,password)
+//        return Resource.Success(user)
+//
+//    }
 }

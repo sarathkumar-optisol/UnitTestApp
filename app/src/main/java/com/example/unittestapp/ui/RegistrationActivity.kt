@@ -70,7 +70,7 @@ class RegistrationActivity : AppCompatActivity() {
                 /**
                  * register new user
                  */
-                viewModel.registerUser(userName, password)
+                //viewModel.registerUser(userName, password)
             }
         }
 

@@ -49,9 +49,9 @@ class MainActivityTest {
     }
 
     @Test
-    fun myTest(){
-        val email = "sarath@gmail.com"
-        val password = "sarath123"
+    fun wrongPasswordReturnsFalse(){
+        val email = "sarath1@gmail.com"
+        val password = "sarath321"
         onView(withId(R.id.etUserName)).perform(ViewActions.typeText(email))
         onView(withId(R.id.etPassword)).perform(ViewActions.typeText(password))
         onView(withId(R.id.btnSignIn)).perform(click())
@@ -59,4 +59,6 @@ class MainActivityTest {
         Espresso.closeSoftKeyboard()
         onView(withId(R.id.btnSignIn)).perform(click())
     }
+
+
 }

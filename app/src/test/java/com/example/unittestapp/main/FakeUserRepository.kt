@@ -8,7 +8,7 @@ import com.example.unittestapp.utils.Resource
  */
 class FakeUserRepository : MainRepository {
 
-    private val userProfileList = mutableListOf<UserProfile>()
+     val userProfileList = mutableListOf<UserProfile>()
 
     override fun getUserProfileList(): Resource<List<UserProfile>> {
         return Resource.Success(userProfileList)

@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.unittestapp.R
 import com.example.unittestapp.databinding.FragmentProfileBinding
 import com.example.unittestapp.main.MainViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * Created by SARATH on 10-04-2021
  */
+@ExperimentalCoroutinesApi
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding : FragmentProfileBinding
