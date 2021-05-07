@@ -1,3 +1,5 @@
+import org.gradle.internal.classpath.Instrumented
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -5,6 +7,8 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
+    id 'org.sonarqube'
+    id 'jacoco'
 }
 
 android {
@@ -31,9 +35,11 @@ android {
 
     buildTypes {
         release {
+            testCoverageEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -59,7 +65,18 @@ android {
         exclude 'META-INF/LGPL2.1'
         exclude("META-INF/*.kotlin_module")
     }
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+    tasks.withType(Test) {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+    }
 }
 
 dependencies {
@@ -152,6 +169,91 @@ dependencies {
 //
         androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
+}
+
+task createTestReports(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    group = "Reporting"
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 
 
+    def fileFilter = ['**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/*$ViewInjector*.*',
+                      '**/*$ViewBinder*.*',
+                      '**/*$MembersInjector*.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'android/**/*.*']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/dev/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+//    reportsDir = file("$buildDir/reports")
+
+    getSourceDirectories().setFrom(files("$buildDir/reports"))
+
+    getSourceDirectories().setFrom(files([mainSrc]))
+    getClassDirectories().setFrom(files([debugTree]))
+    getExecutionData().setFrom(files([executionData(files("${project.buildDir}/jacoco/testDevDebugUnitTest.exec"))]))
+
+   // sourceDirectories = files([mainSrc])
+//    classDirectories = files([debugTree])
+
+//    executionData = files("${project.buildDir}/jacoco/testDevDebugUnitTest.exec")
+       def files = fileTree("${buildDir}/outputs/code-coverage/connected/flavors/DEV/").filter { it.isFile() }.files.name
+ //   instrumentationFileName = "${buildDir}/outputs/code-coverage/connected/flavors/DEV/" + files[0]
+}
+
+//sonarqube {
+//    properties {
+//        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-23/android.jar" + ", build/intermediates/exploded-aar*//**//*classes.jar"
+//        property "sonar.sources", "src/main/java"
+//        property "sonar.binaries", "build/intermediates/classes/debug"
+//        property "sonar.libraries", libraries
+//        property "sonar.tests", "src/test/java, src/androidTest/java"
+//        property "sonar.java.test.binaries", "build/intermediates/class/debug"
+//        property "sonar.java.test.libraries", libraries
+//        property "sonar.junit.reportsPath", "build/test-results/debug"
+//        property "sonar.android.lint.report", "build/outputs/lint-results"
+//        property "sonar.projectName", "UnitTestApp"
+//        property "sonar.projectKey", "2c4e37300ebd2ba2a663310236a473b460feb111"
+//        property "sonar.java.coveragePlugin", "jacoco"
+//        property "sonar.jacoco.reportPath", "**/jacoco/*.exec"
+//        property "sonar.tests", ["src/test/java"]
+//        property "sonar.test.inclusions", "**/*Test*/**"
+//        property "sonar.sourceEncoding", "UTF-8"
+//        property "sonar.sources", "src/main/java"
+//        property "sonar.exclusions", '**/*Test*/**,' +
+//                '*.json,' +
+//                '**/*test*/**,' +
+//                '**/.gradle/**,' +
+//                '**/R.class'
+//    }
+//}
+
+
+
+//old
+sonarqube {
+    properties {
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-23/android.jar" + ", build/intermediates/exploded-aar*//**//*classes.jar"
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.libraries", libraries
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+        property "sonar.java.test.binaries", "build/intermediates/class/debug"
+        property "sonar.java.test.libraries", libraries
+        property "sonar.jacoco.reportPath", "build/jacoco/testDebugUnitTest.exec"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportsPath", "build/test-results/debug"
+        property "sonar.android.lint.report", "build/outputs/lint-results"
+//        property "sonar.login", "admin"
+//        property "sonar.password", "admins"
+        property "sonar.projectName", "UnitTestApp"
+        property "sonar.projectKey", "2c4e37300ebd2ba2a663310236a473b460feb111"
+    }
 }
