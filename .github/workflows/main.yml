@@ -24,7 +24,7 @@ jobs:
       - name: Run Lint
         uses: ./gradlew LintDebug
 
-      -name : Upload html test report
+      - name : Upload html test report
         uses: actions/upload-artifact@v2
         with:
           name: index.html
